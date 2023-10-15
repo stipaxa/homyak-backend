@@ -13,13 +13,14 @@ It uses port 3000 upon start.
 
 Endpoints  
 
-|Method|Path|Description|    
-| --- | --- | --- |
-|POST|/notes|[create note](https://github.com/tayapro/notes-backend/blob/main/README.md#create-note)|
-|GET|/notes/:id|[get note](https://github.com/tayapro/notes-backend/blob/main/README.md#get-note)|
-|DELETE|/notes/:id|[delete note](https://github.com/tayapro/notes-backend/blob/main/README.md#delete-note)|
-|PUT|/notes/:id|[update note](https://github.com/tayapro/notes-backend/blob/main/README.md#update-note)|
-|GET|/notes|[list notes](https://github.com/tayapro/notes-backend/blob/main/README.md#list-notes)|
+|Method|Path|Description|Protected|    
+| --- | --- | --- | --- |
+|GET|/ping|health check|no|
+|POST|/notes|[create note](https://github.com/tayapro/notes-backend/blob/main/README.md#create-note)|yes|
+|GET|/notes/:id|[get note](https://github.com/tayapro/notes-backend/blob/main/README.md#get-note)|yes|
+|DELETE|/notes/:id|[delete note](https://github.com/tayapro/notes-backend/blob/main/README.md#delete-note)|yes|
+|PUT|/notes/:id|[update note](https://github.com/tayapro/notes-backend/blob/main/README.md#update-note)|yes|
+|GET|/notes|[list notes](https://github.com/tayapro/notes-backend/blob/main/README.md#list-notes)|yes|
 
 ## Create note
 
