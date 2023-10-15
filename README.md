@@ -15,11 +15,11 @@ Endpoints
 
 |method|path|description|    
 |:----:|:--:|:---------:|
-|POST|/notes|create note|
-|GET|/notes/:id|get note|
-|GET|/notes|list notes|
-|DELETE|/notes/:id|delete note|
-|PUT|/notes/:id|update note|
+|POST|/notes|[create note](https://github.com/tayapro/notes-backend/blob/main/README.md#create-note)|
+|GET|/notes/:id|[get note](https://github.com/tayapro/notes-backend/blob/main/README.md#get-note)|
+|DELETE|/notes/:id|[delete note](https://github.com/tayapro/notes-backend/blob/main/README.md#delete-note)|
+|PUT|/notes/:id|[update note](https://github.com/tayapro/notes-backend/blob/main/README.md#update-note)|
+|GET|/notes|[list notes](https://github.com/tayapro/notes-backend/blob/main/README.md#list-notes)|
 
 ## Create note
 
@@ -38,7 +38,12 @@ Authorization: Bearer <token>
 ```
 
 Example response    
-TBD
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html
+
+62b0a024c3151f3937ec92a7
+```
 
 ## Get note  
 
