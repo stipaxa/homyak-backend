@@ -2,7 +2,7 @@
 FROM node:14
 
 # Set the working directory to /homyaksocial-backend
-WORKDIR /homyaksocial-backend
+WORKDIR /notes-backend
 
 # Copy required files to the image
 COPY index.js .
