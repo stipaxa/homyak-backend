@@ -4,17 +4,17 @@ It uses port 3000 upon start.
 
 # Environment variables
 
-|name|description|  
-|:---------:|:------------------------------------------------------:|  
-MONGO_URL|Mongodb URL
-CORS_ALLOWED_ORIGINS|Allow CORS origins for browsers
+|Name|Description|
+| --- | --- |
+|MONGO_URL|Mongodb URL|
+|CORS_ALLOWED_ORIGINS|Allow CORS origins for browsers|
 
 # API
 
 Endpoints  
 
-|method|path|description|    
-|:----:|:--:|:---------:|
+|Method|Path|Description|    
+| --- | --- | --- |
 |POST|/notes|[create note](https://github.com/tayapro/notes-backend/blob/main/README.md#create-note)|
 |GET|/notes/:id|[get note](https://github.com/tayapro/notes-backend/blob/main/README.md#get-note)|
 |DELETE|/notes/:id|[delete note](https://github.com/tayapro/notes-backend/blob/main/README.md#delete-note)|
