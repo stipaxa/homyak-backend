@@ -7,6 +7,7 @@ jwkToPem = require('jwk-to-pem')
 axios = require('axios')
 require('dotenv').config()
 Note = require('./models/note')
+
 const app = express()
 const port = 3000
 
@@ -66,17 +67,21 @@ app.post('/notes', async function (req, res) {
 // Read note
 app.get('/notes/:id', async function (req, res) {
     try {
-        const note = await Note.findById(req.params.id)
+        const note = await Note.find({
+            author: getUserName(req),
+            _id: req.params.id,
+        })
+        console.log(note)
+
         const result = {
             id: note.id,
-            author: note.author,
             createdAt: note.createdAt,
             updatedAt: note.updatedAt,
             title: note.title,
             text: note.text,
             tags: note.tags,
         }
-        res.json(result)
+        res.status(200).json(result)
     } catch (e) {
         console.error(e)
         res.status(400).send()
@@ -108,11 +113,10 @@ app.put('/notes/:id', async function (req, res) {
 // List notes
 app.get('/notes', async function (req, res) {
     try {
-        const all_notes = await Note.find()
+        const all_notes = await Note.find({ author: getUserName(req) })
         const result = all_notes.map((n) => {
             return {
                 id: n.id,
-                author: n.author,
                 createdAt: n.createdAt,
                 updatedAt: n.updatedAt,
                 title: n.title,
