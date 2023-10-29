@@ -50,7 +50,7 @@ app.get('/test', async function (req, res) {
 app.post('/notes', async function (req, res) {
     try {
         const note = new Note({
-            author: req.body.author,
+            author: getUserName(req),
             createdAt: Date.now(),
             title: req.body.title,
             text: req.body.text,
@@ -67,11 +67,11 @@ app.post('/notes', async function (req, res) {
 // Read note
 app.get('/notes/:id', async function (req, res) {
     try {
-        const note = await Note.find({
+        const note = await Note.findOne({
             author: getUserName(req),
             _id: req.params.id,
         })
-        console.log(note)
+        // console.log(note)
 
         const result = {
             id: note.id,
@@ -91,7 +91,7 @@ app.get('/notes/:id', async function (req, res) {
 // Delete note
 app.delete('/notes/:id', async function (req, res) {
     try {
-        await Note.deleteOne({ _id: req.params.id })
+        await Note.deleteOne({ author: getUserName(req), _id: req.params.id })
         res.status(200).send()
     } catch (e) {
         console.error(e)
@@ -102,6 +102,13 @@ app.delete('/notes/:id', async function (req, res) {
 // Update note
 app.put('/notes/:id', async function (req, res) {
     try {
+        const note = await Note.findOne({
+            author: getUserName(req),
+            _id: req.params.id,
+        })
+        console.log('Error from update: ', note)
+        if (!note) throw new Error('note not found')
+
         await Note.findByIdAndUpdate({ _id: req.params.id }, req.body)
         res.status(200).send()
     } catch (e) {
