@@ -57,7 +57,15 @@ app.post('/notes', async function (req, res) {
             tags: req.body.tags,
         })
         const id = (await note.save()).id
-        res.status(200).send(id)
+        const result = {
+            id,
+            createdAt: note.createdAt,
+            updatedAt: note.createdAt,
+            title: note.title,
+            text: note.text,
+            tags: note.tags,
+        }
+        res.status(200).json(result)
     } catch (e) {
         console.error(e)
         res.status(400).send()
@@ -71,7 +79,6 @@ app.get('/notes/:id', async function (req, res) {
             author: getUserName(req),
             _id: req.params.id,
         })
-        // console.log(note)
 
         const result = {
             id: note.id,
@@ -102,15 +109,26 @@ app.delete('/notes/:id', async function (req, res) {
 // Update note
 app.put('/notes/:id', async function (req, res) {
     try {
+        // Update
+        const fieldsToBeUpdated = { ...req.body, updatedAt: Date.now() }
+        await Note.findByIdAndUpdate({ _id: req.params.id }, fieldsToBeUpdated)
+
+        // Return the updated note
         const note = await Note.findOne({
             author: getUserName(req),
             _id: req.params.id,
         })
-        console.log('Error from update: ', note)
         if (!note) throw new Error('note not found')
 
-        await Note.findByIdAndUpdate({ _id: req.params.id }, req.body)
-        res.status(200).send()
+        const result = {
+            id: note.id,
+            createdAt: note.createdAt,
+            updatedAt: note.updatedAt,
+            title: note.title,
+            text: note.text,
+            tags: note.tags,
+        }
+        res.status(200).json(result)
     } catch (e) {
         console.error(e)
         res.status(400).send()
