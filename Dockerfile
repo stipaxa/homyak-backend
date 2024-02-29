@@ -1,5 +1,5 @@
 ﻿# Use an node:14 image from DockerHub as a parent image
-FROM node:14
+FROM node:21.6.1-slim
 
 # Set the working directory to /homyaksocial-backend
 WORKDIR /notes-backend
