@@ -1,30 +1,32 @@
-# Notes Backend  
+# Notes Backend
+
 CRUD backend for Notes application. It uses `Nodejs` and `express` for HTTP API and `Mongodb` as storage.  
 It uses port 3000 upon start.
 
 # Environment variables
 
-|Name|Description|
-| --- | --- |
-|MONGO_URL|Mongodb URL|
-|CORS_ALLOWED_ORIGINS|Allow CORS origins for browsers|
+| Name                 | Description                     |
+| -------------------- | ------------------------------- |
+| MONGO_URL            | Mongodb URL                     |
+| CORS_ALLOWED_ORIGINS | Allow CORS origins for browsers |
 
 # API
 
-Endpoints  
+Endpoints
 
-|Method|Path|Description|Protected|    
-| --- | --- | --- | --- |
-|GET|/ping|health check|no|
-|POST|/notes|[create note](https://github.com/tayapro/notes-backend/blob/main/README.md#create-note)|yes|
-|GET|/notes/:id|[get note](https://github.com/tayapro/notes-backend/blob/main/README.md#get-note)|yes|
-|DELETE|/notes/:id|[delete note](https://github.com/tayapro/notes-backend/blob/main/README.md#delete-note)|yes|
-|PUT|/notes/:id|[update note](https://github.com/tayapro/notes-backend/blob/main/README.md#update-note)|yes|
-|GET|/notes|[list notes](https://github.com/tayapro/notes-backend/blob/main/README.md#list-notes)|yes|
+| Method | Path       | Description                                                                             | Protected |
+| ------ | ---------- | --------------------------------------------------------------------------------------- | --------- |
+| GET    | /ping      | health check                                                                            | no        |
+| POST   | /notes     | [create note](https://github.com/tayapro/notes-backend/blob/main/README.md#create-note) | yes       |
+| GET    | /notes/:id | [get note](https://github.com/tayapro/notes-backend/blob/main/README.md#get-note)       | yes       |
+| DELETE | /notes/:id | [delete note](https://github.com/tayapro/notes-backend/blob/main/README.md#delete-note) | yes       |
+| PUT    | /notes/:id | [update note](https://github.com/tayapro/notes-backend/blob/main/README.md#update-note) | yes       |
+| GET    | /notes     | [list notes](https://github.com/tayapro/notes-backend/blob/main/README.md#list-notes)   | yes       |
 
 ## Create note
 
-Example request  
+Example request
+
 ```http
 POST /notes HTTP/1.1
 Content-Type: application/json
@@ -38,7 +40,8 @@ Authorization: Bearer <token>
 }
 ```
 
-Example response    
+Example response
+
 ```http
 HTTP/1.1 200 OK
 Content-Type: text/html
@@ -46,15 +49,17 @@ Content-Type: text/html
 62b0a024c3151f3937ec92a7
 ```
 
-## Get note  
+## Get note
 
-Example request  
+Example request
+
 ```http
 GET /notes/62b0a024c3151f3937ec92a7 HTTP/1.1
 Authorization: Bearer <token>
 ```
 
-Example response  
+Example response
+
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -70,22 +75,25 @@ Content-Type: application/json
 }
 ```
 
-## Delete note  
+## Delete note
 
-Example request  
+Example request
+
 ```http
 DELETE /notes/62b0a024c3151f3937ec92a7 HTTP/1.1
 Authorization: Bearer <token>
 ```
 
-Example response  
+Example response
+
 ```http
 HTTP/1.1 200 OK
 ```
 
-## Update note  
+## Update note
 
-Example request  
+Example request
+
 ```http
 PUT /notes/62b0a024c3151f3937ec92a7 HTTP/1.1
 Content-Type: application/json
@@ -96,20 +104,23 @@ Authorization: Bearer <token>
 }
 ```
 
-Example response  
+Example response
+
 ```http
 HTTP/1.1 200 OK
 ```
 
-## List notes  
+## List notes
 
-Example request  
+Example request
+
 ```http
 GET /notes HTTP/1.1
 Authorization: Bearer <token>
 ```
 
-Example response  
+Example response
+
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -133,3 +144,13 @@ Content-Type: application/json
   "tags": ["test", "documentation"]
 }]
 ```
+
+# CHANGELOG
+
+## v0.0.1-alpha
+
+-   [x] No changes, compatibility tag
+
+# Known issues
+
+-   [ ] Currently request public JWKS once upon start. It must do it periodically.
