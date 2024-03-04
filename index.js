@@ -1,12 +1,12 @@
-express = require('express')
-morgan = require('morgan')
-mongoose = require('mongoose')
-cors = require('cors')
-jwt = require('jsonwebtoken')
-jwkToPem = require('jwk-to-pem')
-axios = require('axios')
-require('dotenv').config()
-Note = require('./models/note')
+import express from 'express'
+import morgan from 'morgan'
+import mongoose from 'mongoose'
+import cors from 'cors'
+import jwt from 'jsonwebtoken'
+import jwkToPem from 'jwk-to-pem'
+import axios from 'axios'
+import 'dotenv/config'
+import Note from './models/note.js'
 
 const app = express()
 const port = 3000
@@ -15,10 +15,7 @@ const port = 3000
 app.use(express.json())
 app.use(morgan('combined'))
 
-let myIDkeys = null
-axios.get(process.env.MYID_URL).then((resp) => {
-    myIDkeys = resp.data
-})
+const myIDkeys = (await axios.get(process.env.MYID_URL)).data
 
 app.use(
     cors({
@@ -39,11 +36,6 @@ app.listen(port, function () {
 
 app.get('/ping', async function (req, res) {
     res.status(200).send()
-})
-
-app.get('/test', async function (req, res) {
-    const u = getUserName(req)
-    res.status(200).send(u)
 })
 
 // Create note
@@ -99,7 +91,7 @@ app.get('/notes/:id', async function (req, res) {
 app.delete('/notes/:id', async function (req, res) {
     try {
         await Note.deleteOne({ author: getUserName(req), _id: req.params.id })
-        res.status(200).send()
+        res.status(204).send()
     } catch (e) {
         console.error(e)
         res.status(400).send()

@@ -1,4 +1,4 @@
-mongoose = require("mongoose")
+import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema({
     author: {
@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
     updatedAt: {
         type: Number,
         required: true,
-        default: () => Date.now()
+        default: () => Date.now(),
     },
     title: {
         type: String,
@@ -24,9 +24,9 @@ const schema = new mongoose.Schema({
     },
     tags: {
         type: Array,
-    }
+    },
 })
 
-const Note = mongoose.model("notes", schema)
+const Note = mongoose.model('notes', schema)
 
-module.exports = Note
+export default Note

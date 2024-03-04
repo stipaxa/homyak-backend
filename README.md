@@ -33,7 +33,6 @@ Content-Type: application/json
 Authorization: Bearer <token>
 
 {
-  "author": "test_user",
   "title": "Test topic",
   "text": "Some long content. Can be more than one sentence.",
   "tags": ["test", "documentation"]
@@ -42,11 +41,18 @@ Authorization: Bearer <token>
 
 Example response
 
-```http
+```
 HTTP/1.1 200 OK
-Content-Type: text/html
+Content-Type: application/json
 
-62b0a024c3151f3937ec92a7
+{
+  "id": "65e5fb4cb353e5f69dfd231b",
+  "createdAt": 1709570892538,
+  "updatedAt": 1709570892538,
+  "title": "Test topic",
+  "text": "Some long content. Can be more than one sentence.",
+  "tags": ["test", "documentation"]
+}
 ```
 
 ## Get note
@@ -66,7 +72,6 @@ Content-Type: application/json
 
 {
   "id": "62b0a024c3151f3937ec92a7",
-  "author": "test_user",
   "createdAt": 1655742500032,
   "updatedAt": 1655742500042,
   "title": "Test topic",
@@ -87,7 +92,7 @@ Authorization: Bearer <token>
 Example response
 
 ```http
-HTTP/1.1 200 OK
+HTTP/1.1 204 OK
 ```
 
 ## Update note
@@ -108,6 +113,16 @@ Example response
 
 ```http
 HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": "65e5fb4cb353e5f69dfd231b",
+  "createdAt": 1709570892538,
+  "updatedAt": 1709571310597,
+  "title": "Updated test topic",
+  "text": "Some long content. Can be more than one sentence.",
+  "tags": ["test", "documentation"]
+}
 ```
 
 ## List notes
@@ -127,7 +142,6 @@ Content-Type: application/json
 
 [{
   "id": "62b0a024c3151f3937ec92a7",
-  "author": "test_user",
   "createdAt": 1655742500032,
   "updatedAt": 1655742500052,
   "title": "Updated test topic",
@@ -136,7 +150,6 @@ Content-Type: application/json
 },
 {
   "id": "62b0a024c3151f3937ec92a8",
-  "author": "test_user",
   "createdAt": 1655742500072,
   "updatedAt": 1655742500092,
   "title": "Another test topic",
@@ -150,6 +163,13 @@ Content-Type: application/json
 ## v0.0.1-alpha
 
 -   [x] No changes, compatibility tag
+
+## v0.0.2-alpha
+
+-   [x] APIs which do not have any content in response should return `HTTP 204` upon success
+-   [x] Fix documentation: create note API returns JSON, not plain text
+-   [x] Change axios `then` promise handling to top-level `await` when requesting public key from `notes-id`
+-   [x] Migrate to `ES6` modules
 
 # Known issues
 
