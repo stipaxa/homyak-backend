@@ -171,6 +171,10 @@ Content-Type: application/json
 -   [x] Change axios `then` promise handling to top-level `await` when requesting public key from `notes-id`
 -   [x] Migrate to `ES6` modules
 
-# Known issues
+## v0.0.3-alpha
 
--   [ ] Currently request public JWKS once upon start. It must do it periodically.
+-   [ ] Fix vulnerabilities and deprecation warnings
+-   [ ] Review dependencies in package.json
+-   [x] Currently request public JWKS once upon start. It must do it periodically
+
+# Known issues
