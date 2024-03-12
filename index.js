@@ -5,6 +5,8 @@ import cors from 'cors'
 import jwt from 'jsonwebtoken'
 import jwkToPem from 'jwk-to-pem'
 import axios from 'axios'
+import parseDuration from 'parse-duration'
+import cron from 'node-cron'
 import 'dotenv/config'
 import Note from './models/note.js'
 
@@ -15,7 +17,17 @@ const port = 3000
 app.use(express.json())
 app.use(morgan('combined'))
 
-const myIDkeys = (await axios.get(process.env.MYID_URL)).data
+let myIDkeys = (await axios.get(process.env.MYID_URL)).data
+// const interval = parseDuration(process.env.JWKS_RENEW_INTERVAL)
+// setInterval(async function () {
+//     console.log(`Renewing JWKS`)
+//     myIDkeys = (await axios.get(process.env.MYID_URL)).data
+// }, interval)
+
+cron.schedule(process.env.JWKS_RENEW_SCHEDULE, async function () {
+    console.log('Renewing JWKS')
+    myIDkeys = (await axios.get(process.env.MYID_URL)).data
+})
 
 app.use(
     cors({
@@ -26,6 +38,7 @@ app.use(
     })
 )
 
+mongoose.set('strictQuery', true)
 mongoose.connect(process.env.MONGO_URL).catch(function (err) {
     console.log(err)
 })
