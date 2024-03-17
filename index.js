@@ -164,17 +164,33 @@ app.get('/notes', async function (req, res) {
 // return username from JWT or throw exception
 function getUserName(req) {
     const token = req.get('Authorization').split(' ')[1]
-    const { username, token_use } = jwt.verify(
-        token,
-        jwkToPem(myIDkeys.keys[0]),
-        {
-            algirithms: ['RS256'],
-        }
-    )
+    const { username, token_use } = verifyToken(token, myIDkeys.keys)
+
     if (token_use !== 'access') {
         throw new Error('invalid token use')
     }
-    //console.log(JSON.stringify(decoded_token, null, 2))
 
     return username
+}
+
+function verifyToken(token, setKeys) {
+    console.log('TOKEN: ', token)
+    console.log('Set keys: ', setKeys)
+    const kid = jwt.decode(token, { complete: true }).header.kid
+
+    let keyJWK = null
+    for (let i = 0; i < setKeys.length; i++) {
+        if (kid === setKeys[i].kid) {
+            keyJWK = setKeys[i]
+        }
+        console.log('key', setKeys[i])
+    }
+
+    if (keyJWK === null) {
+        throw new Error('Oooops')
+    }
+
+    const keyPEM = jwkToPem(keyJWK)
+    const decoded_token = jwt.verify(token, keyPEM)
+    return decoded_token
 }
