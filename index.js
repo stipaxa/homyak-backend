@@ -17,17 +17,20 @@ const port = 3000
 app.use(express.json())
 app.use(morgan('combined'))
 
-let myIDkeys = (await axios.get(process.env.MYID_URL)).data
+let jwksFromID = {
+    keys: [],
+}
+// let myIDkeys = (await axios.get(process.env.MYID_URL)).data
 // const interval = parseDuration(process.env.JWKS_RENEW_INTERVAL)
 // setInterval(async function () {
 //     console.log(`Renewing JWKS`)
 //     myIDkeys = (await axios.get(process.env.MYID_URL)).data
 // }, interval)
 
-cron.schedule(process.env.JWKS_RENEW_SCHEDULE, async function () {
-    console.log('Renewing JWKS')
-    myIDkeys = (await axios.get(process.env.MYID_URL)).data
-})
+// cron.schedule(process.env.JWKS_RENEW_SCHEDULE, async function () {
+//     console.log('Renewing JWKS')
+//     myIDkeys = (await axios.get(process.env.MYID_URL)).data
+// })
 
 app.use(
     cors({
@@ -55,7 +58,7 @@ app.get('/ping', async function (req, res) {
 app.post('/notes', async function (req, res) {
     try {
         const note = new Note({
-            author: getUserName(req),
+            author: await getUserName(req),
             createdAt: Date.now(),
             title: req.body.title,
             text: req.body.text,
@@ -81,7 +84,7 @@ app.post('/notes', async function (req, res) {
 app.get('/notes/:id', async function (req, res) {
     try {
         const note = await Note.findOne({
-            author: getUserName(req),
+            author: await getUserName(req),
             _id: req.params.id,
         })
 
@@ -103,7 +106,10 @@ app.get('/notes/:id', async function (req, res) {
 // Delete note
 app.delete('/notes/:id', async function (req, res) {
     try {
-        await Note.deleteOne({ author: getUserName(req), _id: req.params.id })
+        await Note.deleteOne({
+            author: await getUserName(req),
+            _id: req.params.id,
+        })
         res.status(204).send()
     } catch (e) {
         console.error(e)
@@ -120,7 +126,7 @@ app.put('/notes/:id', async function (req, res) {
 
         // Return the updated note
         const note = await Note.findOne({
-            author: getUserName(req),
+            author: await getUserName(req),
             _id: req.params.id,
         })
         if (!note) throw new Error('note not found')
@@ -143,7 +149,7 @@ app.put('/notes/:id', async function (req, res) {
 // List notes
 app.get('/notes', async function (req, res) {
     try {
-        const all_notes = await Note.find({ author: getUserName(req) })
+        const all_notes = await Note.find({ author: await getUserName(req) })
         const result = all_notes.map((n) => {
             return {
                 id: n.id,
@@ -161,10 +167,26 @@ app.get('/notes', async function (req, res) {
     }
 })
 
+async function getJwk(token) {
+    const kid = jwt.decode(token, { complete: true }).header.kid
+
+    let jwk = jwksFromID.keys.find((k) => k.kid === kid)
+    if (!jwk) {
+        jwksFromID = (await axios.get(process.env.MYID_URL)).data
+    }
+    jwk = jwksFromID.keys.find((k) => k.kid === kid)
+    if (!jwk) {
+        throw new Error('Ooops')
+    }
+
+    return jwk
+}
+
 // return username from JWT or throw exception
-function getUserName(req) {
+async function getUserName(req) {
     const token = req.get('Authorization').split(' ')[1]
-    const { username, token_use } = verifyToken(token, myIDkeys.keys)
+    const jwk = await getJwk(token)
+    const { username, token_use } = verifyToken(token, jwk)
 
     if (token_use !== 'access') {
         throw new Error('invalid token use')
@@ -173,24 +195,12 @@ function getUserName(req) {
     return username
 }
 
-function verifyToken(token, setKeys) {
-    console.log('TOKEN: ', token)
-    console.log('Set keys: ', setKeys)
-    const kid = jwt.decode(token, { complete: true }).header.kid
-
-    let keyJWK = null
-    for (let i = 0; i < setKeys.length; i++) {
-        if (kid === setKeys[i].kid) {
-            keyJWK = setKeys[i]
-        }
-        console.log('key', setKeys[i])
-    }
-
-    if (keyJWK === null) {
+function verifyToken(token, jwk) {
+    if (jwk === null) {
         throw new Error('Oooops')
     }
 
-    const keyPEM = jwkToPem(keyJWK)
+    const keyPEM = jwkToPem(jwk)
     const decoded_token = jwt.verify(token, keyPEM)
     return decoded_token
 }
