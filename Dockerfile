@@ -12,7 +12,7 @@ COPY models ./models
 
 # run npm command, which looks for package-lock.json and install all deps from where
 # as result directory node_modules will be created
-RUN npm install
+RUN npm install --omit=dev
 
 # Make port 3000 available to the world outside this container
 EXPOSE 3000

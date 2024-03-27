@@ -177,4 +177,8 @@ Content-Type: application/json
 -   [x] Review dependencies in package.json
 -   [x] Currently request public JWKS once upon start. It must do it periodically
 
-# Known issues
+## v0.0.4-alpha
+
+-   [x] Change JWKS fetching algorithm
+-   [x] Find proper key by key ID for token verification
+-   [x] Rotate certificates
