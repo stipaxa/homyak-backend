@@ -182,3 +182,7 @@ Content-Type: application/json
 -   [x] Change JWKS fetching algorithm
 -   [x] Find proper key by key ID for token verification
 -   [x] Rotate certificates
+
+## v0.0.5-alpha
+
+-   [x] Implement Docker compose file
