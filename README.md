@@ -186,3 +186,5 @@ Content-Type: application/json
 ## v0.0.5-alpha
 
 -   [x] Implement Docker compose file
+
+## v0.0.6-alpha
