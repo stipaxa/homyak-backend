@@ -188,3 +188,5 @@ Content-Type: application/json
 -   [x] Implement Docker compose file
 
 ## v0.0.6-alpha
+
+-   [x] Change URL endpoint to /api/backend/
