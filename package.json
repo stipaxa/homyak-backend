@@ -1,6 +1,6 @@
 {
     "name": "notes-backend",
-    "version": "0.0.3-alpha",
+    "version": "0.0.6-alpha",
     "description": "CRUD backend for Notes application",
     "main": "index.js",
     "type": "module",
