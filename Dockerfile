@@ -1,4 +1,4 @@
-﻿# Use an node:14 image from DockerHub as a parent image
+﻿# Use an node image from DockerHub as a parent image
 FROM node:21.6.1-slim
 
 # Set the working directory to /homyaksocial-backend

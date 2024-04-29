@@ -42,7 +42,7 @@ app.get('/ping', async function (req, res) {
 })
 
 // Create note
-app.post('/notes', async function (req, res) {
+app.post('/api/backend/notes', async function (req, res) {
     try {
         const note = new Note({
             author: await getUserName(req),
@@ -68,7 +68,7 @@ app.post('/notes', async function (req, res) {
 })
 
 // Read note
-app.get('/notes/:id', async function (req, res) {
+app.get('/api/backend/notes/:id', async function (req, res) {
     try {
         const note = await Note.findOne({
             author: await getUserName(req),
@@ -91,7 +91,7 @@ app.get('/notes/:id', async function (req, res) {
 })
 
 // Delete note
-app.delete('/notes/:id', async function (req, res) {
+app.delete('/api/backend/notes/:id', async function (req, res) {
     try {
         await Note.deleteOne({
             author: await getUserName(req),
@@ -105,7 +105,7 @@ app.delete('/notes/:id', async function (req, res) {
 })
 
 // Update note
-app.put('/notes/:id', async function (req, res) {
+app.put('/api/backend/notes/:id', async function (req, res) {
     try {
         // Update
         const fieldsToBeUpdated = { ...req.body, updatedAt: Date.now() }
@@ -134,7 +134,7 @@ app.put('/notes/:id', async function (req, res) {
 })
 
 // List notes
-app.get('/notes', async function (req, res) {
+app.get('/api/backend/notes', async function (req, res) {
     try {
         const all_notes = await Note.find({ author: await getUserName(req) })
         const result = all_notes.map((n) => {
