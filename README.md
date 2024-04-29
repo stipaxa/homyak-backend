@@ -189,4 +189,5 @@ Content-Type: application/json
 
 ## v0.0.6-alpha
 
+-   [x] Add caddy reverse-proxy
 -   [x] Change URL endpoint to /api/backend/
